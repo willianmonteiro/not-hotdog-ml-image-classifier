@@ -1,0 +1,41 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# --- ML artifacts ---
+# Trained models can be large and are reproducible from train.py — keep them out of git.
+# (We make a deliberate exception later for the final deploy model if needed.)
+*.h5
+*.keras
+model/checkpoints/
+model/logs/
+
+# --- Datasets ---
+# The Kaggle dataset is large and license-bound; users download it themselves (see README).
+# We keep the folder structure via .gitkeep but ignore the actual images.
+# Class folders: "yes" = is a hotdog, "no" = not a hotdog.
+model/data/train/yes/*
+model/data/train/no/*
+model/data/validation/yes/*
+model/data/validation/no/*
+!**/.gitkeep
+
+# --- Node / React ---
+node_modules/
+frontend/build/
+frontend/dist/
+.eslintcache
+
+# --- Env / secrets ---
+.env
+*.local
+
+# --- OS / editor ---
+.DS_Store
+.idea/
+.vscode/
+*.swp
