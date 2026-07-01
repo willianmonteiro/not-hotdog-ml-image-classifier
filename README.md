@@ -36,7 +36,7 @@ python model/prepare_data.py --verify                      # sanity-check the co
 
 - [x] **1. Project structure + README skeleton**
 - [x] **2. Data pipeline** — folder structure + Kaggle dataset download instructions
-- [ ] **3. Image preprocessing** — resize to 224×224, normalize, data augmentation
+- [x] **3. Image preprocessing** — resize to 224×224, normalize, data augmentation
 - [ ] **4. CNN model architecture** — Conv2D, MaxPooling2D, Dense, binary crossentropy
 - [ ] **5. Training script** — early stopping + model checkpoint callbacks
 - [ ] **6. Evaluation** — accuracy, loss curves, confusion matrix
