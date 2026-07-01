@@ -8,12 +8,6 @@
 Full-stack ML image classifier using a CNN (TensorFlow/Keras), FastAPI, and React. Covers the
 full lifecycle: data pipeline, image preprocessing, model training, evaluation, and deployment.
 
-## Demo
-
-<p align="center">
-  <img src="docs/screenshot.png" width="360" alt="Not Hotdog app classifying a hotdog image with 100% confidence" />
-</p>
-
 ---
 
 ## What it does
@@ -23,6 +17,10 @@ full lifecycle: data pipeline, image preprocessing, model training, evaluation, 
 3. You get back a label (`Hotdog` / `Not Hotdog`) and a confidence percentage.
 
 **Stack:** TensorFlow/Keras (model) · FastAPI (API) · React + TypeScript (frontend) · Docker.
+
+<p align="center">
+  <img src="docs/screenshot.png" width="360" alt="Not Hotdog app classifying a hotdog image with 100% confidence" />
+</p>
 
 ---
 
