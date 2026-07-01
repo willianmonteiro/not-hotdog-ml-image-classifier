@@ -32,12 +32,35 @@ python model/prepare_data.py --verify                      # sanity-check the co
 
 ---
 
+## How the model works
+
+The classifier is a small **Convolutional Neural Network (CNN)** — the standard architecture
+for image tasks. The key concepts:
+
+- **Conv2D** — slides small filters across the image to detect visual patterns. Early layers
+  pick up edges and colors; deeper layers combine those into textures and shapes. Filters
+  double each block (32 → 64 → 128) as the network learns richer features.
+- **MaxPooling2D** — downsamples by keeping the strongest value in each 2×2 region. It shrinks
+  the data (less compute) and makes detection robust to small shifts in position.
+- **Flatten → Dense** — turns the final feature maps into a flat vector and feeds a fully
+  connected layer that reasons over the combined features.
+- **Dropout (0.5)** — randomly disables half the neurons during training so the model can't
+  lean on any single one; a simple, effective guard against overfitting.
+- **Sigmoid output** — one neuron producing a probability from 0 to 1 (the hotdog confidence).
+- **Binary crossentropy** — the loss function that matches a single-probability, two-class setup.
+
+```
+224×224×3 → [Conv 32 → Pool] → [Conv 64 → Pool] → [Conv 128 → Pool] → Flatten → Dense 128 → Dropout → Sigmoid
+```
+
+---
+
 ## Build steps
 
 - [x] **1. Project structure + README skeleton**
 - [x] **2. Data pipeline** — folder structure + Kaggle dataset download instructions
 - [x] **3. Image preprocessing** — resize to 224×224, normalize, data augmentation
-- [ ] **4. CNN model architecture** — Conv2D, MaxPooling2D, Dense, binary crossentropy
+- [x] **4. CNN model architecture** — Conv2D, MaxPooling2D, Dense, binary crossentropy
 - [ ] **5. Training script** — early stopping + model checkpoint callbacks
 - [ ] **6. Evaluation** — accuracy, loss curves, confusion matrix
 - [ ] **7. Save model** for deployment (`.h5`)
