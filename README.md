@@ -1,10 +1,10 @@
-# 🌭 Not Hotdog — ML Image Processor
+# 🌭 Not Hotdog — ML Image Classifier
 
 > Inspired by the "SeeFood" app from HBO's *Silicon Valley*. Upload an image and the app
 > tells you whether it's a **Hotdog 🌭** or **Not Hotdog ❌**, with a confidence score.
 
-A full-stack machine learning project built to be **readable and educational** — every
-component is documented.
+Full-stack ML image classifier using a CNN (TensorFlow/Keras), FastAPI, and React. Covers the
+full lifecycle: data pipeline, image preprocessing, model training, evaluation, and deployment.
 
 ---
 
@@ -76,6 +76,19 @@ curl -F "file=@path/to/image.jpg" http://localhost:8000/classify
 # {"label": "Hotdog 🌭", "is_hotdog": true, "confidence": 0.98}
 ```
 
+### 5. Run the frontend
+
+With the API running, start the React app in a second terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open the printed URL (default <http://localhost:5173>) and drag an image in. The API URL
+defaults to `http://localhost:8000`; override it with `VITE_API_URL` (see `.env.example`).
+
 ---
 
 ## How the model works
@@ -99,7 +112,7 @@ Because MobileNetV2 expects its own input scaling, preprocessing uses `preproces
 (pixels mapped to `[-1, 1]`) instead of a plain `/255` — applied identically at train and
 inference time.
 
-### Why transfer learning? (a real design decision)
+### Why transfer learning?
 
 The first version was a **CNN trained from scratch** (stacked Conv2D + MaxPooling blocks). On
 this dataset it failed — after training and running evaluation it sat at exactly **50%
@@ -139,26 +152,6 @@ The best model is written to `model/checkpoints/best_model.h5` and per-epoch met
   false positives (called hotdog, wasn't) and false negatives (missed a real hotdog).
 
 Plots are saved to `model/checkpoints/` (`learning_curves.png`, `confusion_matrix.png`).
-
----
-
-## Roadmap
-
-**Model pipeline** — `model/` &nbsp;✅
-- Data prep from the Kaggle dataset (`prepare_data.py`)
-- Preprocessing: resize, normalize, augmentation (`preprocessing.py`)
-- CNN architecture (`model.py`) + training with callbacks (`train.py`)
-- Evaluation and export to a deploy-ready `.h5` (`evaluate.py`, `export.py`, `predict.py`)
-
-**API** — `api/` &nbsp;🚧
-- ✅ FastAPI service with `POST /classify` returning label + confidence
-- ⬜ Rate limiting with slowapi (10 requests/min/IP)
-
-**Frontend** — `frontend/` &nbsp;⬜
-- Drag-and-drop image upload, live result with confidence
-
-**Infrastructure** &nbsp;⬜
-- Docker + docker-compose to run API and frontend together
 
 ---
 
