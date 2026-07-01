@@ -1,0 +1,17 @@
+# Keep the build context small and the image clean.
+.git
+.venv
+**/__pycache__
+**/*.pyc
+
+# Frontend deps/build are handled inside the Dockerfile.
+frontend/node_modules
+frontend/dist
+
+# Training-only artifacts and data — the deploy image only needs the exported model.
+model/data
+model/checkpoints
+model/logs
+
+docs
+*.md

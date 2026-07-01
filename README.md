@@ -1,4 +1,13 @@
-
+---
+title: Not Hotdog
+emoji: 🌭
+colorFrom: green
+colorTo: yellow
+sdk: docker
+app_port: 7860
+pinned: false
+license: mit
+---
 
 # 🌭 Not Hotdog — ML Image Classifier
 

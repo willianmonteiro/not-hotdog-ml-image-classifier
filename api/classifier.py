@@ -9,6 +9,11 @@ import io
 import os
 from pathlib import Path
 
+# Force the Keras 2 API before TensorFlow is imported. The model was trained/saved with
+# Keras 2, and on TF 2.16+ (default Keras 3) it wouldn't load. Setting this in code means
+# the API works without the caller having to export TF_USE_LEGACY_KERAS.
+os.environ.setdefault("TF_USE_LEGACY_KERAS", "1")
+
 import numpy as np
 from PIL import Image
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input

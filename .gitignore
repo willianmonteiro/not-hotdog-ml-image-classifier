@@ -8,11 +8,12 @@ env/
 
 # --- ML artifacts ---
 # Trained models can be large and are reproducible from train.py — keep them out of git.
-# (We make a deliberate exception later for the final deploy model if needed.)
 *.h5
 *.keras
 model/checkpoints/
 model/logs/
+# Exception: the exported deploy model is small (~9MB) and needed by the Docker/HF image.
+!model/hotdog_classifier.h5
 
 # --- Datasets ---
 # The Kaggle dataset is large and license-bound; users download it themselves (see README).
