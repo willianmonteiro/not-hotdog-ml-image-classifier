@@ -47,17 +47,18 @@ mv ~/Downloads/kaggle.json ~/.kaggle/kaggle.json
 chmod 600 ~/.kaggle/kaggle.json   # Kaggle CLI refuses to run if the token is world-readable
 ```
 
-**2. Download and unzip the dataset.**
+**2. Download and unzip the dataset into an isolated `raw/` folder.**
 
 ```bash
-# Run from the repo root
-kaggle datasets download -d dansbecker/hot-dog-not-hot-dog -p model/data --unzip
+# Run from the repo root. Download into raw/ so Kaggle's own train/ folder never
+# collides with our train/ and validation/.
+kaggle datasets download -d dansbecker/hot-dog-not-hot-dog -p model/data/raw --unzip
 ```
 
 This gives you a `seefood/` folder with Kaggle's own structure:
 
 ```
-model/data/seefood/
+model/data/raw/seefood/
 ├── train/
 │   ├── hot_dog/
 │   └── not_hot_dog/
@@ -69,10 +70,11 @@ model/data/seefood/
 **3. Reorganize it into our `yes`/`no` layout.**
 
 ```bash
-python model/prepare_data.py --source model/data/seefood
+python model/prepare_data.py --source model/data/raw/seefood --clean
 ```
 
-That's it — `prepare_data.py` copies the images into the right folders and prints a count.
+`prepare_data.py` copies the images into the right folders, prints a count, and (with
+`--clean`) deletes the `raw/` download afterwards so nothing extra is left behind.
 
 ---
 
@@ -83,7 +85,7 @@ That's it — `prepare_data.py` copies the images into the right folders and pri
 3. Run the same reorganize step, pointing `--source` at the unzipped `seefood` folder:
 
 ```bash
-python model/prepare_data.py --source /path/to/unzipped/seefood
+python model/prepare_data.py --source /path/to/unzipped/seefood --clean
 ```
 
 ---

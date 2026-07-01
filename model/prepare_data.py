@@ -3,8 +3,8 @@
 Kaggle ships `hot_dog`/`not_hot_dog` under `train`/`test`. Our training code expects
 `yes`/`no` under `train`/`validation`. This maps one onto the other and verifies the result.
 
-    python model/prepare_data.py --source model/data/seefood   # reorganize the download
-    python model/prepare_data.py --verify                      # count what's there
+    python model/prepare_data.py --source model/data/raw/seefood --clean  # organize + delete raw
+    python model/prepare_data.py --verify                                 # count what's there
 """
 
 import argparse
@@ -38,7 +38,7 @@ def _count_images(folder: Path) -> int:
     return sum(1 for p in folder.iterdir() if p.suffix.lower() in IMAGE_EXTENSIONS)
 
 
-def reorganize(source: Path) -> None:
+def reorganize(source: Path, clean: bool = False) -> None:
     # Copy (not move) so a wrong run doesn't force re-downloading from Kaggle.
     if not source.exists():
         raise SystemExit(f"❌ Source folder not found: {source}\n"
@@ -64,6 +64,13 @@ def reorganize(source: Path) -> None:
         print(f"  {kaggle_split}/{kaggle_class:12s} → {our_split}/{our_class:3s}  ({copied} images)")
 
     print(f"\n✅ Copied {total_copied} images into the train/validation layout.")
+
+    # Remove the raw download once it's safely copied — keeps model/data tidy and avoids
+    # leaving the Kaggle folders lying around for the next person who clones the repo.
+    if clean:
+        shutil.rmtree(source, ignore_errors=True)
+        print(f"🧹 Removed raw download at {source}")
+
     verify()
 
 
@@ -89,13 +96,15 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--source", type=Path, help="Path to the unzipped Kaggle 'seefood' folder.")
+    parser.add_argument("--clean", action="store_true",
+                        help="Delete the raw source folder after copying into yes/no.")
     parser.add_argument("--verify", action="store_true", help="Count images in the current layout.")
     args = parser.parse_args()
 
     if args.verify:
         verify()
     elif args.source:
-        reorganize(args.source)
+        reorganize(args.source, clean=args.clean)
     else:
         parser.error("Provide --source <path> to organize the data, or --verify to count it.")
 
